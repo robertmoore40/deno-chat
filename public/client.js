@@ -13,6 +13,8 @@ window.addEventListener('DOMContentLoaded', () => {
 function OnConnectionOpen() {
 
     const queryParams = getQueryParams()
+    if(!queryParams.name || !queryParams.group)
+        window.location.href = 'chat.html';
     console.log(queryParams);
 
 
