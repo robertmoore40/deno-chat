@@ -15,7 +15,8 @@ function OnConnectionOpen() {
     const queryParams = getQueryParams()
     if(!queryParams.name || !queryParams.group)
         window.location.href = 'chat.html';
-    console.log(queryParams);
+        return;
+        console.log(queryParams);
 
 
     ws.send()
@@ -27,6 +28,10 @@ function OnConnectionOpen() {
         groupName: queryParams.group,
         name: queryParams.name
     }
+
+    ws.send(JSON.stringify(event))
+
+    )}
     
     ws.send(event);
 
