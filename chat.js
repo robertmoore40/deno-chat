@@ -16,3 +16,17 @@ import { v4 } from "https://deno.land/std@0.58.0/uuid/mod.ts";
  * }
  */
 
+ 
+const usersMap = new Map();
+
+/**
+ * groupName: [user1, user2]
+ * 
+ * {
+ *    userId: string,
+ *    name: string,
+ *    groupName: string,
+ *    ws: WebSocket
+ * }
+ */
+
