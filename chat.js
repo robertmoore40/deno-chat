@@ -30,3 +30,15 @@ const usersMap = new Map();
  * }
  */
 
+const groupsMap = new Map();
+
+/**
+ * groupName: [message1,message2]
+ * 
+ * {
+ *    userId: string,
+ *    name: string,
+ *    message: string
+ * }
+ * 
+ */
