@@ -5,15 +5,29 @@ window.addEventListener('DOMContentLoaded', () => {
     ws.addEventListener('open', OnConnectionOpen);
     ws.addEventListener('open', onMessageReceived);
 
-    const queryParams = getQueryParams()
-    console.log(queryParams);
-
+    
 })
 
 
 
 function OnConnectionOpen() {
+
+    const queryParams = getQueryParams()
+    console.log(queryParams);
+
+
+    ws.send()
+
     console.log('Connection Open');
+    
+    const event = {
+        event: 'join',
+        groupName: queryParams.group,
+        name: queryParams.name
+    }
+    
+    ws.send(event);
+
 }
 
 function onMessageReceived(){
