@@ -1,7 +1,4 @@
-export default async function chat(ws) {
-
-}
-
+export default async function chat(ws) {}
 
 // @ts-nocheck
 import { isWebSocketCloseEvent } from "https://deno.land/std@0.58.0/ws/mod.ts";
@@ -16,12 +13,11 @@ import { v4 } from "https://deno.land/std@0.58.0/uuid/mod.ts";
  * }
  */
 
- 
 const usersMap = new Map();
 
 /**
  * groupName: [user1, user2]
- * 
+ *
  * {
  *    userId: string,
  *    name: string,
@@ -34,11 +30,23 @@ const groupsMap = new Map();
 
 /**
  * groupName: [message1,message2]
- * 
+ *
  * {
  *    userId: string,
  *    name: string,
  *    message: string
  * }
- * 
+ *
  */
+
+function emitUserList(groupName) {
+  const users = groupsMap.get(groupName) || [];
+
+  for (const user of users) {
+    const event = {
+      event: "users",
+      data: getDisplayUsers(groupName),
+    };
+    user.ws.send(JSON.stringify(event));
+  }
+}
