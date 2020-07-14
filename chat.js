@@ -50,3 +50,10 @@ function emitUserList(groupName) {
     user.ws.send(JSON.stringify(event));
   }
 }
+
+function getDisplayUsers(groupName) {
+    const users = groupsMap.get(groupName) || [];
+    return users.map((u) => {
+      return { userId: u.userId, name: u.name };
+    });
+  }
