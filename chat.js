@@ -57,3 +57,19 @@ function getDisplayUsers(groupName) {
       return { userId: u.userId, name: u.name };
     });
   }
+
+  function emitMessage(groupName, message, senderId) {
+    const users = groupsMap.get(groupName) || [];
+    for (const user of users) {
+      const tmpMessage = {
+        ...message,
+        sender: user.userId === senderId ? "me" : senderId,
+      };
+      const event = {
+        event: "message",
+        data: tmpMessage,
+      };
+      user.ws.send(JSON.stringify(event));
+    }
+  }
+  
