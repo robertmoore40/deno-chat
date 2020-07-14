@@ -14,3 +14,5 @@ listenAndServe({port:3000}, async req => {
     }
 
 })
+
+console.log("Server started on port 3000");
