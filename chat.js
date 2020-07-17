@@ -133,3 +133,13 @@ function getDisplayUsers(groupName) {
     }
   }
   
+  function emitPreviousMessages(groupName, ws) {
+    const messages = messagesMap.get(groupName) || [];
+  
+    const event = {
+      event: "previousMessages",
+      data: messages,
+    };
+    ws.send(JSON.stringify(event));
+  }
+  
