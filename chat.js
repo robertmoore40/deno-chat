@@ -149,3 +149,16 @@ function getDisplayUsers(groupName) {
     if (!userObj) {
       return;
       let users = groupsMap.get(userObj.groupName) || [];
+
+
+   
+    users = users.filter((u) => u.userId !== userId);
+    groupsMap.set(userObj.groupName, users);
+  
+
+    usersMap.delete(userId);
+  
+    emitUserList(userObj.groupName);
+  }
+  }
+  
