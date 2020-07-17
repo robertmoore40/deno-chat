@@ -143,3 +143,8 @@ function getDisplayUsers(groupName) {
     ws.send(JSON.stringify(event));
   }
   
+  function leaveGroup(userId) {
+
+    const userObj = usersMap.get(userId);
+    if (!userObj) {
+      return;
