@@ -148,3 +148,4 @@ function getDisplayUsers(groupName) {
     const userObj = usersMap.get(userId);
     if (!userObj) {
       return;
+      let users = groupsMap.get(userObj.groupName) || [];
