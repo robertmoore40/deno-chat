@@ -29,16 +29,12 @@ const usersMap = new Map();
 const groupsMap = new Map();
 
 export default async function chat(ws) {
-
   const userId = v4.generate();
-
 
   for await (let data of ws) {
     const event = typeof data === "string" ? JSON.parse(data) : data;
 
-
     if (isWebSocketCloseEvent(data)) {
-
       leaveGroup(userId);
       break;
     }
@@ -46,9 +42,7 @@ export default async function chat(ws) {
     let userObj;
 
     switch (event.event) {
-
       case "join":
-
         userObj = {
           userId,
           name: event.name,
@@ -56,14 +50,11 @@ export default async function chat(ws) {
           ws,
         };
 
-
         usersMap.set(userId, userObj);
-
 
         const users = groupsMap.get(event.groupName) || [];
         users.push(userObj);
         groupsMap.set(event.groupName, users);
-
 
         emitUserList(event.groupName);
 
@@ -85,8 +76,6 @@ export default async function chat(ws) {
     }
   }
 }
-
-
 
 /**
  * groupName: [message1,message2]
@@ -112,53 +101,48 @@ function emitUserList(groupName) {
 }
 
 function getDisplayUsers(groupName) {
-    const users = groupsMap.get(groupName) || [];
-    return users.map((u) => {
-      return { userId: u.userId, name: u.name };
-    });
-  }
+  const users = groupsMap.get(groupName) || [];
+  return users.map((u) => {
+    return { userId: u.userId, name: u.name };
+  });
+}
 
-  function emitMessage(groupName, message, senderId) {
-    const users = groupsMap.get(groupName) || [];
-    for (const user of users) {
-      const tmpMessage = {
-        ...message,
-        sender: user.userId === senderId ? "me" : senderId,
-      };
-      const event = {
-        event: "message",
-        data: tmpMessage,
-      };
-      user.ws.send(JSON.stringify(event));
-    }
-  }
-  
-  function emitPreviousMessages(groupName, ws) {
-    const messages = messagesMap.get(groupName) || [];
-  
-    const event = {
-      event: "previousMessages",
-      data: messages,
+function emitMessage(groupName, message, senderId) {
+  const users = groupsMap.get(groupName) || [];
+  for (const user of users) {
+    const tmpMessage = {
+      ...message,
+      sender: user.userId === senderId ? "me" : senderId,
     };
-    ws.send(JSON.stringify(event));
+    const event = {
+      event: "message",
+      data: tmpMessage,
+    };
+    user.ws.send(JSON.stringify(event));
   }
-  
-  function leaveGroup(userId) {
+}
 
-    const userObj = usersMap.get(userId);
-    if (!userObj) {
-      return;
-      let users = groupsMap.get(userObj.groupName) || [];
+function emitPreviousMessages(groupName, ws) {
+  const messages = messagesMap.get(groupName) || [];
 
+  const event = {
+    event: "previousMessages",
+    data: messages,
+  };
+  ws.send(JSON.stringify(event));
+}
 
-   
+function leaveGroup(userId) {
+  const userObj = usersMap.get(userId);
+  if (!userObj) {
+    return;
+    let users = groupsMap.get(userObj.groupName) || [];
+
     users = users.filter((u) => u.userId !== userId);
     groupsMap.set(userObj.groupName, users);
-  
 
     usersMap.delete(userId);
-  
+
     emitUserList(userObj.groupName);
   }
-  }
-  
+}
